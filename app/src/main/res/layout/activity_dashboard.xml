@@ -12,13 +12,24 @@
         android:layout_height="match_parent"
         tools:context=".dashboard.DashboardActivity">
 
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/textSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="Sort By"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textSort" />
 
         <ProgressBar
             android:id="@+id/progress"
