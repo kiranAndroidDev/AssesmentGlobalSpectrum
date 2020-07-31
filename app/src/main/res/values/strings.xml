@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AssessmentSpectrumGlobal</string>
+    <string name="welcome_msg">Welcome to Our Club</string>
+    <string name="error_msg">Something went wrong!!</string>
+</resources>
