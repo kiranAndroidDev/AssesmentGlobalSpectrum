@@ -9,12 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.example.assessmentspectrumglobal.R
+import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
 import com.google.android.material.snackbar.Snackbar
 
 /**
 Created by kiranb on 31/7/20
  */
-abstract class BaseActivity :AppCompatActivity(){
+abstract class BaseActivity : AppCompatActivity() {
 
     init {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -24,18 +25,18 @@ abstract class BaseActivity :AppCompatActivity(){
         super.onCreate(savedInstanceState)
     }
 
-    fun showErrorMessage(msg:String?){
-        showSnackBar(msg)
+    fun showErrorMessage(msg: String?) {
+        showSnackBar(msg ?: getString(R.string.error_msg))
     }
 
-    fun showErrorMessage(@StringRes msg:Int){
+    fun showErrorMessage(@StringRes msg: Int) {
         showSnackBar(getString(msg))
     }
 
-    private fun showSnackBar(message: String?) {
-       Snackbar.make(
-            findViewById(R.id.content),
-            message?:getString(R.string.error_msg), Snackbar.LENGTH_SHORT
+    private fun showSnackBar(message: String) {
+        Snackbar.make(
+            findViewById(android.R.id.content),
+            message ?: getString(R.string.error_msg), Snackbar.LENGTH_SHORT
         ).show()
     }
 }

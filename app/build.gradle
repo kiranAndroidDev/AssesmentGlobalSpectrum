@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def koin_version = '2.0.1'
     def retrofit_version = '2.6.0'
     def okhttp_version = "3.12.10"

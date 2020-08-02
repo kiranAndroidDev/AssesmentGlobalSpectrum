@@ -8,18 +8,31 @@ import com.example.assessmentspectrumglobal.utils.Resource
 Created by kiranb on 30/7/20
  */
 interface DashboardContract {
-    interface IView{
+    interface IView {
         fun showLoading(show: Boolean)
-        fun initAdapter(list: List<ClubDataModel>)
+        fun loadMemberScene(list: List<ClubDataModel.Member?>)
+        fun loadClubListScene(list: List<ClubDataModel>)
     }
-    interface IActions{
+
+    interface IClubDataFragmentView {
+        fun initClubListAdapter(list: List<ClubDataModel>)
+    }
+
+    interface IMemberDataragmentView {
+        fun initMemberListAdapter(list: List<ClubDataModel.Member>)
+    }
+
+    interface IActions {
         fun getClubData()
         fun subscribeToState(): LiveData<DashboardStates>?
     }
-    interface ILogic{
+
+    interface ILogic {
         suspend fun getClubData(): DashboardStates
     }
-    interface IRepo{
+
+    interface IRepo {
         suspend fun getClubData(): Resource<List<ClubDataModel>>
+        suspend fun getClubDataLocally(): Resource<List<ClubDataModel>>
     }
 }

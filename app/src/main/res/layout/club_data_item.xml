@@ -4,20 +4,13 @@
 
     <data>
         <variable
-            name="name"
-            type="String" />
-
-        <variable
-            name="logo"
-            type="String" />
-
-        <variable
-            name="website"
-            type="String" />
+            name="item"
+            type="com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/row"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:elevation="6dp"
@@ -29,19 +22,19 @@
         <ImageView
             android:id="@+id/img_Logo"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:scaleType="fitXY"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/guideline"
-            imageUrl="@{logo}"
+            imageUrl="@{item.logo}"
             />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent="0.4"
+            app:layout_constraintGuide_percent="0.25"
             android:orientation="vertical"/>
 
         <TextView
@@ -54,7 +47,7 @@
             app:layout_constraintVertical_bias="0.3"
             android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@id/guideline"
-            android:text="@{name}"/>
+            android:text="@{item.company}"/>
 
         <TextView
             android:id="@+id/websiteTxt"
@@ -65,7 +58,19 @@
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/companyName"
             app:layout_constraintLeft_toRightOf="@id/guideline"
-            android:text="@{website}"/>
+            android:text="@{item.website}"/>
+
+        <TextView
+            android:id="@+id/about_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="12dp"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/img_Logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@{item.about}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

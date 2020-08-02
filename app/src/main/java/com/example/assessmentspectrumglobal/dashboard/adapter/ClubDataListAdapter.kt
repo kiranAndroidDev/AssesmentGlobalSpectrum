@@ -1,6 +1,6 @@
 package com.example.assessmentspectrumglobal.dashboard.adapter
 
-import android.graphics.ColorSpace.Model
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,8 +12,9 @@ import com.example.assessmentspectrumglobal.databinding.ClubDataItemBinding
 /**
 Created by kiranb on 31/7/20
  */
-class ClubDataListAdapter(var list: ArrayList<ClubDataModel>) :
+class ClubDataListAdapter(val list: ArrayList<ClubDataModel>, var listener:ItemClickListener) :
     RecyclerView.Adapter<ClubDataListAdapter.ViewHolder>() {
+
     private lateinit var binding: ClubDataItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,13 +26,19 @@ class ClubDataListAdapter(var list: ArrayList<ClubDataModel>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.clubDataItemBinding.root.setOnClickListener { }
-        holder.clubDataItemBinding.name = item.company
-        holder.clubDataItemBinding.logo = item.logo
-        holder.clubDataItemBinding.website = item.website
+        holder.clubDataItemBinding.row.setOnClickListener {
+            listener.showMemberListOnItemSelect(item)
+        }
+        holder.clubDataItemBinding.item = item
+
+    }
+
+    override fun getItemId(position: Int): Long {
+        return super.getItemId(position)
     }
 
     override fun getItemCount(): Int {
+        Log.e("size", "${list.size}")
         return list.size
     }
 
@@ -59,5 +66,41 @@ class ClubDataListAdapter(var list: ArrayList<ClubDataModel>) :
         RecyclerView.ViewHolder(binding.root) {
         var clubDataItemBinding: ClubDataItemBinding = binding
     }
+
+    interface ItemClickListener{
+        fun showMemberListOnItemSelect(item: ClubDataModel)
+    }
+
+
+   /* override fun getFilter(): Filter {
+        return object : Filter() {
+            private lateinit var newList: ArrayList<ClubDataModel>
+
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val charString = charSequence.toString()
+                val filteredList: MutableList<ClubDataModel> = ArrayList()
+                if (charString.isNotEmpty()) {
+                    for (data in list) {
+                        if (data.company!!.contains(charSequence.toString())) {
+                            filteredList.add(data)
+                        }
+                    }
+                    newList = filteredList as ArrayList<ClubDataModel>
+                }else{
+                    newList = list
+                }
+                val filterResults = FilterResults()
+                filterResults.values = filterResults
+                return filterResults
+            }
+
+            override fun publishResults(
+                charSequence: CharSequence,
+                filterResults: FilterResults
+            ) {
+               setData(filterResults.values as ArrayList<ClubDataModel>)
+            }
+        }
+    }*/
 
 }

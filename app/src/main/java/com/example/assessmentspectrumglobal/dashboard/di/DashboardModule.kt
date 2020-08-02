@@ -6,6 +6,7 @@ import com.example.assessmentspectrumglobal.dashboard.DashboardUseCase
 import com.example.assessmentspectrumglobal.network.ApiHelper
 import com.example.assessmentspectrumglobal.network.ApiHelperImpl
 import com.example.assessmentspectrumglobal.network.ApiService
+import com.example.assessmentspectrumglobal.utils.Utility
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -15,11 +16,10 @@ Created by kiranb on 30/7/20
 
 
 val dashboardModule = module(override = true) {
-    factory { createRepository(get()) }
+    factory { createRepository(get(), get()) }
     factory { createUseCase(get()) }
+    single { Utility(get()) }
 }
-
-
 
 
 fun createUseCase(
@@ -28,8 +28,8 @@ fun createUseCase(
     return DashboardUseCase(repo)
 }
 
-fun createRepository(helper: ApiHelper): DashboardContract.IRepo {
-    return DashboardRepository(helper)
+fun createRepository(helper: ApiHelper, utility: Utility): DashboardContract.IRepo {
+    return DashboardRepository(helper, utility)
 }
 
 
