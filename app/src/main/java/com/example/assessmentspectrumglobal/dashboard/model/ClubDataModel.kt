@@ -1,9 +1,11 @@
 package com.example.assessmentspectrumglobal.dashboard.model
 
 import android.os.Parcelable
+import androidx.room.Entity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+
 data class ClubDataModel(
     var about: String?,
     var company: String?,

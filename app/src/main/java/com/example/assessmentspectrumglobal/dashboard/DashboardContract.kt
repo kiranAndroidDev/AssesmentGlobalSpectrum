@@ -2,6 +2,7 @@ package com.example.assessmentspectrumglobal.dashboard
 
 import androidx.lifecycle.LiveData
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.CompanyEntity
 import com.example.assessmentspectrumglobal.utils.Resource
 
 /**
@@ -32,7 +33,7 @@ interface DashboardContract {
     }
 
     interface IRepo {
-        suspend fun getClubData(): Resource<List<ClubDataModel>>
-        suspend fun getClubDataLocally(): Resource<List<ClubDataModel>>
+        suspend fun getClubDataRemote(): Resource<List<CompanyEntity>>
+        suspend fun getClubData(): Resource<List<CompanyEntity>>
     }
 }

@@ -1,4 +1,4 @@
-package com.example.assessmentspectrumglobal.dashboard
+package com.example.assessmentspectrumglobal.dashboard.fragments
 
 /**
 Created by kiranb on 2/8/20
@@ -14,14 +14,17 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assessmentspectrumglobal.R
+import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.adapter.ClubDataListAdapter
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.dashboard.onCompanySelected
 import com.example.assessmentspectrumglobal.databinding.FragmentClubListBinding
 import java.util.*
 
-private const val ARG_PARAM1 = "memberList"
+private const val ARG_PARAM1 = "companyList"
 
-class ClubDataListFragment : Fragment(), DashboardContract.IClubDataFragmentView {
+class ClubDataListFragment : Fragment(),
+    DashboardContract.IClubDataFragmentView {
     private  var listener: onCompanySelected?=null
     private var clubDataListAdapter: ClubDataListAdapter? = null
     private var dataList: List<ClubDataModel>? = null
@@ -57,7 +60,8 @@ class ClubDataListFragment : Fragment(), DashboardContract.IClubDataFragmentView
     companion object {
         @JvmStatic
         fun newInstance(param1: List<ClubDataModel>) =
-            ClubDataListFragment().apply {
+            ClubDataListFragment()
+                .apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_PARAM1, param1 as ArrayList)
                 }

@@ -3,12 +3,11 @@ package com.example.assessmentspectrumglobal.dashboard.di
 import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.DashboardRepository
 import com.example.assessmentspectrumglobal.dashboard.DashboardUseCase
+import com.example.assessmentspectrumglobal.database.CompanyWithMembersDao
+import com.example.assessmentspectrumglobal.database.MemberDao
 import com.example.assessmentspectrumglobal.network.ApiHelper
-import com.example.assessmentspectrumglobal.network.ApiHelperImpl
-import com.example.assessmentspectrumglobal.network.ApiService
 import com.example.assessmentspectrumglobal.utils.Utility
 import org.koin.dsl.module
-import retrofit2.Retrofit
 
 /**
 Created by kiranb on 30/7/20
@@ -16,7 +15,7 @@ Created by kiranb on 30/7/20
 
 
 val dashboardModule = module(override = true) {
-    factory { createRepository(get(), get()) }
+    factory { createRepository(get(), get(), get(), get()) }
     factory { createUseCase(get()) }
     single { Utility(get()) }
 }
@@ -28,8 +27,13 @@ fun createUseCase(
     return DashboardUseCase(repo)
 }
 
-fun createRepository(helper: ApiHelper, utility: Utility): DashboardContract.IRepo {
-    return DashboardRepository(helper, utility)
+fun createRepository(
+    helper: ApiHelper,
+    utility: Utility,
+    companyWithMembersDao: CompanyWithMembersDao,
+    memberDao: MemberDao
+): DashboardContract.IRepo {
+    return DashboardRepository(helper, utility, companyWithMembersDao, memberDao)
 }
 
 

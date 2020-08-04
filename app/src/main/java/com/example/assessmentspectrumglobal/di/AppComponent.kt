@@ -6,5 +6,6 @@ Created by kiranb on 30/7/20
 val appComponent = listOf(
     activityModule,
     networkModule,
-    viewModelsModule
+    viewModelsModule,
+    dbModule
 )

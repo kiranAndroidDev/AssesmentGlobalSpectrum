@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.assessmentspectrumglobal.R
 import com.example.assessmentspectrumglobal.dashboard.base.BaseActivity
+import com.example.assessmentspectrumglobal.dashboard.fragments.ClubDataListFragment
+import com.example.assessmentspectrumglobal.dashboard.fragments.MemberListFragment
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
 import com.example.assessmentspectrumglobal.databinding.ActivityDashboardBinding
 import org.koin.android.viewmodel.ext.android.viewModel

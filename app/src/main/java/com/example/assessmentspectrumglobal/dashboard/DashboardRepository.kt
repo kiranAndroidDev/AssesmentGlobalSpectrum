@@ -1,38 +1,57 @@
 package com.example.assessmentspectrumglobal.dashboard
 
-import android.content.Context
-import android.content.res.AssetManager
-import com.example.assessmentspectrumglobal.R
-import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.CompanyWithMembersDao
+import com.example.assessmentspectrumglobal.database.CompanyEntity
+import com.example.assessmentspectrumglobal.database.MemberDao
 import com.example.assessmentspectrumglobal.network.ApiHelper
 import com.example.assessmentspectrumglobal.utils.Resource
 import com.example.assessmentspectrumglobal.utils.Utility
-import kotlinx.coroutines.Deferred
-import retrofit2.HttpException
-import kotlin.Exception
 
 /**
 Created by kiranb on 30/7/20
  */
 
-class DashboardRepository(val apiHelper: ApiHelper, val utility: Utility) :
+class DashboardRepository(
+    val apiHelper: ApiHelper,
+    val utility: Utility,
+    val companyWithMembersDao: CompanyWithMembersDao,
+    val memberDao: MemberDao
+) :
     DashboardContract.IRepo {
-    override suspend fun getClubData(): Resource<List<ClubDataModel>> {
-        return try {
-            Resource.success(apiHelper.getData())
-        } catch (e: Exception) {
-            getClubDataLocally()
+
+
+    override suspend fun getClubDataRemote(): Resource<List<CompanyEntity>> {
+        var list: List<CompanyEntity>
+        if (companyWithMembersDao.getAllCompanies().isNullOrEmpty()) {
+            val res = apiHelper.getData() ?: return Resource.error(null)
+            companyWithMembersDao.saveAll(res.map { CompanyEntity.DataToMap(it) })
         }
-
-    }
-
-    override suspend fun getClubDataLocally(): Resource<List<ClubDataModel>> {
-        val res =   utility.getClubDataLocal()
-            return if (res==null)
-                Resource.error(null)
+        list = companyWithMembersDao.getAllCompanies()
+        return if(list.isNullOrEmpty())
+            Resource.error(null)
         else
-            Resource.success(res)
+            Resource.success(list)
+
     }
 
+    /*
+    * For instance logic goes as on every session login we will add data to our database
+    * and clear database on logout. But we are not using any session maintenance so we will update data
+    * only once
+    * */
+    override suspend fun getClubData(): Resource<List<CompanyEntity>> {
+        var list: List<CompanyEntity>
+        if (companyWithMembersDao.getAllCompanies().isNullOrEmpty()) {
+            val res = utility.getClubDataLocal() ?: return Resource.error(null)
+            companyWithMembersDao.saveAll(res.map { CompanyEntity.DataToMap(it) })
+            memberDao.saveAll(res.map { CompanyEntity.DataToMap(it) })
+        }
+        list = companyWithMembersDao.getAllCompanies()
+        return if(list.isNullOrEmpty())
+            Resource.error(null)
+        else
+            Resource.success(list)
+    }
 
 }
+
