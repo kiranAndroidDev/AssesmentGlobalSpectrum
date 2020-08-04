@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
-import com.example.assessmentspectrumglobal.databinding.ClubDataItemBinding
 import com.example.assessmentspectrumglobal.databinding.MemberDataItemBinding
 
 /**
 Created by kiranb on 2/8/20
  */
-class MemberListAdapter (var list: ArrayList<ClubDataModel.Member>) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
+class MemberListAdapter (val list: List<ClubDataModel.Member>) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
+
+    private var currentList: List<ClubDataModel.Member> = list
 
     private lateinit var binding: MemberDataItemBinding
 
@@ -23,7 +24,7 @@ class MemberListAdapter (var list: ArrayList<ClubDataModel.Member>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
+        val item = currentList[position]
         holder.memberDataItemBinding.item = item
     }
 
@@ -44,7 +45,7 @@ class MemberListAdapter (var list: ArrayList<ClubDataModel.Member>) : RecyclerVi
 
 
     fun showSortedListByAge(ascending: Boolean) {
-        val newData = ArrayList(list)
+        val newData = ArrayList(currentList)
         if (ascending) {
             newData.sortBy { it.age }
         } else
@@ -54,13 +55,15 @@ class MemberListAdapter (var list: ArrayList<ClubDataModel.Member>) : RecyclerVi
     }
 
     fun showOrignalList() {
-        setData(list)
+        setData(currentList)
     }
 
-    private fun setData(newData: ArrayList<ClubDataModel.Member>) {
-        val diffResult = DiffUtil.calculateDiff(MemberListDiffCallback(newData, list))
-        list.clear()
-        this.list.addAll(newData)
+    private fun setData(newData: List<ClubDataModel.Member>) {
+        val diffResult = DiffUtil.calculateDiff(MemberListDiffCallback(newData, currentList))
+        val updatedList = currentList.toMutableList()
+        updatedList.clear()
+        updatedList.addAll(newData)
+        currentList = updatedList.toList()
         diffResult.dispatchUpdatesTo(this)
     }
 

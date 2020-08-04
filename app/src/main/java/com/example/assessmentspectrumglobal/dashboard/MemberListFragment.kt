@@ -35,6 +35,8 @@ class MemberListFragment : Fragment() , DashboardContract.IMemberDataragmentView
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_member_list, container, false)
+        initMemberListAdapter(memberList!!)
+        setSpinnerForMemberList(binding.spinnerSort)
         return binding.root
     }
 
@@ -81,7 +83,7 @@ class MemberListFragment : Fragment() , DashboardContract.IMemberDataragmentView
                     0 -> memberDataListAdapter?.showOrignalList()
                     1 -> memberDataListAdapter?.showSortedListByName(true)
                     2 -> memberDataListAdapter?.showSortedListByName(false)
-                    3 -> memberDataListAdapter?.showSortedListByAge(false)
+                    3 -> memberDataListAdapter?.showSortedListByAge(true)
                     4 -> memberDataListAdapter?.showSortedListByAge(false)
                 }
             }
