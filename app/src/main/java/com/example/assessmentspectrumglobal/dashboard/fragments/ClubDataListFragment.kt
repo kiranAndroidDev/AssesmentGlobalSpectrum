@@ -14,10 +14,10 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assessmentspectrumglobal.R
+import com.example.assessmentspectrumglobal.dashboard.DashboardActivity
 import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.adapter.ClubDataListAdapter
-import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
-import com.example.assessmentspectrumglobal.dashboard.onCompanySelected
+import com.example.assessmentspectrumglobal.dashboard.ItemSelection
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.databinding.FragmentClubListBinding
 import java.util.*
@@ -26,7 +26,7 @@ private const val ARG_PARAM1 = "companyList"
 
 class ClubDataListFragment : Fragment(),
     DashboardContract.IClubDataFragmentView {
-    private  var listener: onCompanySelected?=null
+    private  var listener: ItemSelection?=null
     private var clubDataListAdapter: ClubDataListAdapter? = null
     private var dataList: List<CompanyWithMembers>? = null
     lateinit var binding: FragmentClubListBinding
@@ -52,10 +52,6 @@ class ClubDataListFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-    fun setCompanySelectListener(listener: onCompanySelected){
-        this.listener = listener
     }
 
     companion object {
@@ -102,15 +98,7 @@ class ClubDataListFragment : Fragment(),
     override fun initClubListAdapter(list: List<CompanyWithMembers>) {
         binding.rV.layoutManager = LinearLayoutManager(activity)
         binding.rV.setHasFixedSize(true)
-        clubDataListAdapter = ClubDataListAdapter(list,
-            object : ClubDataListAdapter.ItemClickListener {
-
-                override fun showMemberListOnItemSelect(item: CompanyWithMembers) {
-                    item.members?.let {
-                        listener?.onShowMembers(it)
-                    }
-                }
-            })
+        clubDataListAdapter = ClubDataListAdapter(list, (activity as DashboardActivity))
         binding.rV.adapter = clubDataListAdapter
     }
 

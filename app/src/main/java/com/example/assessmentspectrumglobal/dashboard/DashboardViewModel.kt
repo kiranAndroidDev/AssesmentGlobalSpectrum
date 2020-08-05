@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.assessmentspectrumglobal.database.CompanyEntity
+import com.example.assessmentspectrumglobal.database.MemberEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,6 +22,18 @@ class DashboardViewModel(var logic: DashboardContract.ILogic) : ViewModel(), Das
         dashboardStates.postValue(DashboardStates.Loading)
         viewModelScope.launch(Dispatchers.IO) {
             dashboardStates.postValue(logic.getClubData())
+        }
+    }
+
+    override  fun updateCompany(companyEntity: CompanyEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            logic.updateCompany(companyEntity)
+        }
+    }
+
+    override  fun updateMember(memberEntity: MemberEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            logic.updateMember(memberEntity)
         }
     }
 }

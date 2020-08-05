@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/row"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
+        android:minHeight="150dp"
         android:elevation="6dp"
         android:padding="5dp"
         android:layout_margin="10dp"
@@ -25,7 +26,6 @@
             android:layout_height="60dp"
             android:scaleType="fitXY"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/guideline"
             imageUrl="@{item.logo}"
@@ -43,8 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.3"
+            android:layout_marginTop="10dp"
             android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@id/guideline"
             android:text="@{item.company}"/>
@@ -72,5 +71,26 @@
             app:layout_constraintRight_toRightOf="parent"
             android:text="@{item.about}"/>
 
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/favouriteCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/mark_as_favourite"
+            android:checked="@{item.favourite}"
+            />
+
+        <Button
+            android:id="@+id/btn_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@drawable/rounded_borderless_button_selector"
+            android:text="@{item.follow?@string/followed:@string/follow}"
+            android:textColor="@{item.follow?@color/colorPrimary:@color/label_heading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/about_txt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

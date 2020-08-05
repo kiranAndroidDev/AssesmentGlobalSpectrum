@@ -22,7 +22,8 @@ class MemberEntity (
     var age: Int?,
     var email: String?,
     var name: String,
-    var phone: String?
+    var phone: String?,
+    var favourite: Boolean = false
 ):Parcelable{}
 /*
 * foreignKeys = [ForeignKey(

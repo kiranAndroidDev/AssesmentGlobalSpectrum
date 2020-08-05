@@ -7,27 +7,27 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.assessmentspectrumglobal.dashboard.ItemSelection
 import com.example.assessmentspectrumglobal.database.CompanyEntity
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
-import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.databinding.ClubDataItemBinding
 
 
 /**
 Created by kiranb on 31/7/20
  */
-class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: ItemClickListener) :
-    RecyclerView.Adapter<ClubDataListAdapter.ViewHolder>() , Filterable{
+class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: ItemSelection) :
+    RecyclerView.Adapter<ClubDataListAdapter.ViewHolder>(), Filterable {
 
     private var currentList: ArrayList<CompanyEntity> = arrayListOf()
     private var orignalList: ArrayList<CompanyEntity> = arrayListOf()
     private lateinit var binding: ClubDataItemBinding
 
     init {
-         for (i in list){
-             currentList.add(i.companyEntity!!)
-             orignalList.add(i.companyEntity!!)
-         }
+        for (i in list) {
+            currentList.add(i.companyEntity!!)
+            orignalList.add(i.companyEntity!!)
+        }
         Log.e("list", "${currentList.size}  ${orignalList.size} ${list.size}")
     }
 
@@ -41,9 +41,19 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = currentList[position]
         holder.clubDataItemBinding.root.setOnClickListener {
-            listener.showMemberListOnItemSelect(list[position])
+            listener.onShowMembers(list[position].members!!)
         }
+        holder.clubDataItemBinding.btnFollow.setOnClickListener {
+            item.follow = !item.follow
+            listener.onFollowCompany(item)
             holder.clubDataItemBinding.item = item
+
+        }
+        holder.clubDataItemBinding.favouriteCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+            item.favourite = isChecked
+            listener.onMarkCompanyFavourite(item)
+        }
+        holder.clubDataItemBinding.item = item
 
     }
 
@@ -59,7 +69,8 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
         val newData = ArrayList(orignalList)
         if (ascending) {
             newData.sortedBy {
-                it.company }
+                it.company
+            }
         } else
             newData.sortedByDescending { it.company }
         setData(newData)
@@ -85,40 +96,36 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
         var clubDataItemBinding: ClubDataItemBinding = binding
     }
 
-    interface ItemClickListener {
-        fun showMemberListOnItemSelect(item: CompanyWithMembers)
-    }
 
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            private lateinit var newList: List<CompanyEntity>
 
-     override fun getFilter(): Filter {
-         return object : Filter() {
-             private lateinit var newList: List<CompanyEntity>
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val charString = charSequence.toString()
+                val filteredList: MutableList<CompanyEntity> = ArrayList()
+                if (charString.isNotEmpty()) {
+                    for (data in orignalList) {
+                        if (data.company!!.contains(charSequence.toString())) {
+                            filteredList.add(data)
+                        }
+                    }
+                    newList = filteredList
+                } else {
+                    newList = orignalList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = filterResults
+                return filterResults
+            }
 
-             override fun performFiltering(charSequence: CharSequence): FilterResults {
-                 val charString = charSequence.toString()
-                 val filteredList: MutableList<CompanyEntity> = ArrayList()
-                 if (charString.isNotEmpty()) {
-                     for (data in orignalList) {
-                         if (data.company!!.contains(charSequence.toString())) {
-                             filteredList.add(data)
-                         }
-                     }
-                     newList = filteredList
-                 }else{
-                     newList = orignalList
-                 }
-                 val filterResults = FilterResults()
-                 filterResults.values = filterResults
-                 return filterResults
-             }
-
-             override fun publishResults(
-                 charSequence: CharSequence,
-                 filterResults: FilterResults
-             ) {
+            override fun publishResults(
+                charSequence: CharSequence,
+                filterResults: FilterResults
+            ) {
                 setData(filterResults.values as ArrayList<CompanyEntity>)
-             }
-         }
-     }
+            }
+        }
+    }
 
 }

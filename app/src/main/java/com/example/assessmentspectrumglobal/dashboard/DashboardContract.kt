@@ -14,7 +14,7 @@ interface DashboardContract {
     interface IView {
         fun showLoading(show: Boolean)
         fun loadMemberScene(list: List<MemberEntity>)
-        fun loadClubListScene(list:List<CompanyWithMembers>)
+        fun loadClubListScene(list: List<CompanyWithMembers>)
     }
 
     interface IClubDataFragmentView {
@@ -28,14 +28,21 @@ interface DashboardContract {
     interface IActions {
         fun getClubData()
         fun subscribeToState(): LiveData<DashboardStates>?
+        fun updateCompany(companyEntity: CompanyEntity)
+        fun updateMember(memberEntity: MemberEntity)
     }
 
     interface ILogic {
         suspend fun getClubData(): DashboardStates
+        suspend fun updateCompany(companyEntity: CompanyEntity)
+        suspend fun updateMember(memberEntity: MemberEntity)
+
     }
 
     interface IRepo {
         suspend fun getClubDataRemote(): Resource<List<CompanyWithMembers>>
         suspend fun getClubData(): Resource<List<CompanyWithMembers>>
+        suspend fun updateCompany(companyEntity: CompanyEntity)
+        suspend fun updateMember(memberEntity: MemberEntity)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.assessmentspectrumglobal.database
 
+import androidx.annotation.BoolRes
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,6 +16,8 @@ data class CompanyEntity(
     var about: String?,
     var company: String?,
     var logo: String?,
-    var website: String?
-    ){
+    var website: String?,
+    var follow: Boolean = false,
+    var favourite: Boolean = false
+) {
 }

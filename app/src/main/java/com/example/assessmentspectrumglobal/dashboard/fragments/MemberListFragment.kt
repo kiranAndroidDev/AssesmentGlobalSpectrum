@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assessmentspectrumglobal.R
+import com.example.assessmentspectrumglobal.dashboard.DashboardActivity
 import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.adapter.MemberListAdapter
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
@@ -98,7 +99,7 @@ class MemberListFragment : Fragment() ,
 
     override fun initMemberListAdapter(list: List<MemberEntity>) {
         binding.rV.layoutManager = LinearLayoutManager(activity)
-        memberDataListAdapter = MemberListAdapter(list)
+        memberDataListAdapter = MemberListAdapter(list,  (activity as DashboardActivity))
         binding.rV.adapter = memberDataListAdapter
     }
 }

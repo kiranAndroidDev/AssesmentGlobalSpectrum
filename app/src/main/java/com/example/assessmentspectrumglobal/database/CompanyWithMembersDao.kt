@@ -28,6 +28,12 @@ abstract class CompanyWithMembersDao {
     @Insert
     abstract fun insertCompany(companyEntity: CompanyEntity); //return type is the key here.
 
+    @Update
+    abstract fun updateCompany(companyEntity: CompanyEntity)
+
+    @Update
+    abstract fun updateMember(memberEntity: MemberEntity)
+
     @Transaction
     @Delete
     abstract fun delete(companyEntity: CompanyEntity, members: List<MemberEntity>);

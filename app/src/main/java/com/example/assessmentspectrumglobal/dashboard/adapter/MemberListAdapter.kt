@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.dashboard.ItemSelection
 import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.databinding.MemberDataItemBinding
 
 /**
 Created by kiranb on 2/8/20
  */
-class MemberListAdapter (val list: List<MemberEntity>) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
+class MemberListAdapter (val list: List<MemberEntity>, val listener:ItemSelection) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
 
     private var currentList: List<MemberEntity> = list
 
@@ -26,6 +26,10 @@ class MemberListAdapter (val list: List<MemberEntity>) : RecyclerView.Adapter<Me
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = currentList[position]
+        holder.memberDataItemBinding.favouriteCheck.setOnCheckedChangeListener { buttonView, isChecked ->
+            item.favourite = isChecked
+            listener.onMarkMemberFavourite(item)
+        }
         holder.memberDataItemBinding.item = item
     }
 

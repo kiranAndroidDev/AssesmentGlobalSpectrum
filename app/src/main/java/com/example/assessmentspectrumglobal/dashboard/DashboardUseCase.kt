@@ -1,5 +1,7 @@
 package com.example.assessmentspectrumglobal.dashboard
 
+import com.example.assessmentspectrumglobal.database.CompanyEntity
+import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.utils.Status
 
 /**
@@ -12,5 +14,13 @@ class DashboardUseCase( val repo: DashboardContract.IRepo) : DashboardContract.I
             Status.SUCCESS -> DashboardStates.Success(res.data)
             else -> DashboardStates.Error(res.message)
         }
+    }
+
+    override suspend fun updateCompany(companyEntity: CompanyEntity) {
+        repo.updateCompany(companyEntity)
+    }
+
+    override suspend fun updateMember(memberEntity: MemberEntity) {
+        repo.updateMember(memberEntity)
     }
 }

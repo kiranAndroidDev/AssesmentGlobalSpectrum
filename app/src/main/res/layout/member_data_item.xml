@@ -11,13 +11,20 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/member_item"
+        android:paddingStart="6dp"
+        android:paddingBottom="6dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="8dp">
 
         <TextView
             android:id="@+id/txt_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:layout_marginTop="6dp"
             android:gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:text="@{item.name}"
@@ -115,15 +122,17 @@
             app:layout_constraintTop_toBottomOf="@id/txt_email"
             app:layout_constraintLeft_toRightOf="@id/guideline" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginRight="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label_phone"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/favouriteCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginEnd="4dp"
+            android:text="@string/mark_as_favourite"
+            android:checked="@{item.favourite}"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

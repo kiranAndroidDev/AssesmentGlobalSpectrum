@@ -1,8 +1,10 @@
 package com.example.assessmentspectrumglobal.dashboard
 
 import android.util.Log
+import com.example.assessmentspectrumglobal.database.CompanyEntity
 import com.example.assessmentspectrumglobal.database.CompanyWithMembersDao
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
+import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.network.ApiHelper
 import com.example.assessmentspectrumglobal.utils.Resource
 import com.example.assessmentspectrumglobal.utils.Utility
@@ -52,6 +54,14 @@ class DashboardRepository(
             Resource.error(null)
         else
             Resource.success(list)
+    }
+
+    override suspend fun updateCompany(companyEntity: CompanyEntity) {
+        companyWithMembersDao.updateCompany(companyEntity)
+    }
+
+    override suspend fun updateMember(memberEntity: MemberEntity) {
+        companyWithMembersDao.updateMember(memberEntity)
     }
 
 }

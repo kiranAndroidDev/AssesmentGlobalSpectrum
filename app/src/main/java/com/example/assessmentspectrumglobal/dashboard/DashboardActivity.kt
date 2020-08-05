@@ -11,14 +11,14 @@ import com.example.assessmentspectrumglobal.R
 import com.example.assessmentspectrumglobal.dashboard.base.BaseActivity
 import com.example.assessmentspectrumglobal.dashboard.fragments.ClubDataListFragment
 import com.example.assessmentspectrumglobal.dashboard.fragments.MemberListFragment
-import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.CompanyEntity
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.databinding.ActivityDashboardBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class DashboardActivity : BaseActivity(), DashboardContract.IView, onCompanySelected {
+class DashboardActivity : BaseActivity(), DashboardContract.IView, ItemSelection {
 
     private val dashboardViewModel: DashboardViewModel by viewModel()
     lateinit var binding: ActivityDashboardBinding
@@ -47,7 +47,8 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, onCompanySele
                     showLoading(false)
                     showErrorMessage(state.msg)
                 }
-                is DashboardStates.Loading ->{ showLoading(true)
+                is DashboardStates.Loading -> {
+                    showLoading(true)
                     Log.e("stat", "loading")
                 }
                 else -> Log.e("stat", "Success")
@@ -60,28 +61,41 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, onCompanySele
 
     override fun loadClubListScene(list: List<CompanyWithMembers>) {
         val fragment = ClubDataListFragment.newInstance(list)
-        fragment.setCompanySelectListener(this)
         addFragment(fragment)
     }
 
     override fun loadMemberScene(list: List<MemberEntity>) {
-       val fragment = MemberListFragment.newInstance(list)
-        addFragment(fragment)
+        val fragment = MemberListFragment.newInstance(list)
+        replaceFragment(fragment)
     }
 
     override fun showLoading(show: Boolean) {
         binding.progress.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    fun addFragment(fragment:Fragment){
+    private fun addFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame,fragment).addToBackStack(null).commit()
+        transaction.add(R.id.frame, fragment).commit()
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frame, fragment).addToBackStack(null).commit()
     }
 
     override fun onShowMembers(list: List<MemberEntity>) {
         loadMemberScene(list)
     }
 
+    override fun onFollowCompany(companyEntity: CompanyEntity) {
+        dashboardViewModel.updateCompany(companyEntity)
+    }
 
+    override fun onMarkCompanyFavourite(companyEntity: CompanyEntity) {
+        dashboardViewModel.updateCompany(companyEntity)
+    }
 
+    override fun onMarkMemberFavourite(memberEntity: MemberEntity) {
+        dashboardViewModel.updateMember(memberEntity)
+    }
 }
