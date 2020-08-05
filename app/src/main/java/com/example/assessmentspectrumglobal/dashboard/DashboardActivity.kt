@@ -12,6 +12,8 @@ import com.example.assessmentspectrumglobal.dashboard.base.BaseActivity
 import com.example.assessmentspectrumglobal.dashboard.fragments.ClubDataListFragment
 import com.example.assessmentspectrumglobal.dashboard.fragments.MemberListFragment
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.CompanyWithMembers
+import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.databinding.ActivityDashboardBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -56,14 +58,14 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, onCompanySele
     }
 
 
-    override fun loadClubListScene(list: List<ClubDataModel>) {
+    override fun loadClubListScene(list: List<CompanyWithMembers>) {
         val fragment = ClubDataListFragment.newInstance(list)
         fragment.setCompanySelectListener(this)
         addFragment(fragment)
     }
 
-    override fun loadMemberScene(list: List<ClubDataModel.Member?>) {
-       val fragment = MemberListFragment.newInstance(list as ArrayList<ClubDataModel.Member>)
+    override fun loadMemberScene(list: List<MemberEntity>) {
+       val fragment = MemberListFragment.newInstance(list)
         addFragment(fragment)
     }
 
@@ -76,7 +78,7 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, onCompanySele
         transaction.replace(R.id.frame,fragment).addToBackStack(null).commit()
     }
 
-    override fun onShowMembers(list: List<ClubDataModel.Member?>) {
+    override fun onShowMembers(list: List<MemberEntity>) {
         loadMemberScene(list)
     }
 

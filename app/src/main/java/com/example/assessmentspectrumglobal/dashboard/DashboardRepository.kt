@@ -1,8 +1,8 @@
 package com.example.assessmentspectrumglobal.dashboard
 
+import android.util.Log
 import com.example.assessmentspectrumglobal.database.CompanyWithMembersDao
-import com.example.assessmentspectrumglobal.database.CompanyEntity
-import com.example.assessmentspectrumglobal.database.MemberDao
+import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.network.ApiHelper
 import com.example.assessmentspectrumglobal.utils.Resource
 import com.example.assessmentspectrumglobal.utils.Utility
@@ -14,20 +14,20 @@ Created by kiranb on 30/7/20
 class DashboardRepository(
     val apiHelper: ApiHelper,
     val utility: Utility,
-    val companyWithMembersDao: CompanyWithMembersDao,
-    val memberDao: MemberDao
+    val companyWithMembersDao: CompanyWithMembersDao
 ) :
     DashboardContract.IRepo {
 
 
-    override suspend fun getClubDataRemote(): Resource<List<CompanyEntity>> {
-        var list: List<CompanyEntity>
-        if (companyWithMembersDao.getAllCompanies().isNullOrEmpty()) {
-            val res = apiHelper.getData() ?: return Resource.error(null)
-            companyWithMembersDao.saveAll(res.map { CompanyEntity.DataToMap(it) })
+    override suspend fun getClubDataRemote(): Resource<List<CompanyWithMembers>> {
+        if (companyWithMembersDao.loadAll().isNullOrEmpty()) {
+            val res = apiHelper.getData()
+            for (item in res) {
+                companyWithMembersDao.insert(CompanyWithMembers.toCompanyWithMembers(item))
+            }
         }
-        list = companyWithMembersDao.getAllCompanies()
-        return if(list.isNullOrEmpty())
+        val list: List<CompanyWithMembers> = companyWithMembersDao.loadAll()
+        return if (list.isNullOrEmpty())
             Resource.error(null)
         else
             Resource.success(list)
@@ -39,15 +39,16 @@ class DashboardRepository(
     * and clear database on logout. But we are not using any session maintenance so we will update data
     * only once
     * */
-    override suspend fun getClubData(): Resource<List<CompanyEntity>> {
-        var list: List<CompanyEntity>
-        if (companyWithMembersDao.getAllCompanies().isNullOrEmpty()) {
+    override suspend fun getClubData(): Resource<List<CompanyWithMembers>> {
+        if (companyWithMembersDao.loadAll().isNullOrEmpty()) {
             val res = utility.getClubDataLocal() ?: return Resource.error(null)
-            companyWithMembersDao.saveAll(res.map { CompanyEntity.DataToMap(it) })
-            memberDao.saveAll(res.map { CompanyEntity.DataToMap(it) })
+            Log.e("res", "$res")
+            for (item in res) {
+                companyWithMembersDao.insert(CompanyWithMembers.toCompanyWithMembers(item))
+            }
         }
-        list = companyWithMembersDao.getAllCompanies()
-        return if(list.isNullOrEmpty())
+        var list: List<CompanyWithMembers> = companyWithMembersDao.loadAll()
+        return if (list.isNullOrEmpty())
             Resource.error(null)
         else
             Resource.success(list)

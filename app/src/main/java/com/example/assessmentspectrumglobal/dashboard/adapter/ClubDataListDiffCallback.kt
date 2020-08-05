@@ -1,17 +1,19 @@
 package com.example.assessmentspectrumglobal.dashboard.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.CompanyEntity
+import com.example.assessmentspectrumglobal.database.CompanyWithMembers
+
 
 /**
 Created by kiranb on 31/7/20
  */
 class ClubDataListDiffCallback(
-    oldList: List<ClubDataModel>,
-    newList: List<ClubDataModel>
+    oldList: List<CompanyEntity>,
+    newList: List<CompanyEntity>
 ) : DiffUtil.Callback() {
-    private val oldList: List<ClubDataModel>
-    private val newList: List<ClubDataModel>
+    private val oldList: List<CompanyEntity>
+    private val newList: List<CompanyEntity>
     override fun getOldListSize(): Int {
         return oldList.size
     }

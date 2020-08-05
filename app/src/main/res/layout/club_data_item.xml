@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel" />
+            type="com.example.assessmentspectrumglobal.database.CompanyEntity" />
 
     </data>
 

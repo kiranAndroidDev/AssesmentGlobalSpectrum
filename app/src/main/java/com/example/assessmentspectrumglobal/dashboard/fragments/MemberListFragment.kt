@@ -1,6 +1,7 @@
 package com.example.assessmentspectrumglobal.dashboard.fragments
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.assessmentspectrumglobal.R
 import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.adapter.MemberListAdapter
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.databinding.FragmentMemberListBinding
 
 private const val ARG_PARAM1 = "memberList"
@@ -21,7 +23,7 @@ private const val ARG_PARAM1 = "memberList"
 class MemberListFragment : Fragment() ,
     DashboardContract.IMemberDataragmentView {
     private var memberDataListAdapter: MemberListAdapter? = null
-    private var memberList: List<ClubDataModel.Member>? = null
+    private var memberList: List<MemberEntity>? = null
     lateinit var binding: FragmentMemberListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,11 +51,11 @@ class MemberListFragment : Fragment() ,
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: ArrayList<ClubDataModel.Member>) =
+        fun newInstance(param1: List<MemberEntity>) =
             MemberListFragment()
                 .apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(ARG_PARAM1, param1)
+                    putParcelableArrayList(ARG_PARAM1, param1 as ArrayList<MemberEntity>)
                 }
             }
     }
@@ -94,9 +96,9 @@ class MemberListFragment : Fragment() ,
         }
     }
 
-    override fun initMemberListAdapter(list: List<ClubDataModel.Member>) {
+    override fun initMemberListAdapter(list: List<MemberEntity>) {
         binding.rV.layoutManager = LinearLayoutManager(activity)
-        memberDataListAdapter = MemberListAdapter(list as ArrayList<ClubDataModel.Member>)
+        memberDataListAdapter = MemberListAdapter(list)
         binding.rV.adapter = memberDataListAdapter
     }
 }

@@ -6,16 +6,17 @@ Created by kiranb on 2/8/20
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.MemberEntity
 
 /**
 Created by kiranb on 31/7/20
  */
 class MemberListDiffCallback(
-    oldList: List<ClubDataModel.Member>,
-    newList: List<ClubDataModel.Member>
+    oldList: List<MemberEntity>,
+    newList: List<MemberEntity>
 ) : DiffUtil.Callback() {
-    private val oldList: List<ClubDataModel.Member>
-    private val newList: List<ClubDataModel.Member>
+    private val oldList: List<MemberEntity>
+    private val newList: List<MemberEntity>
     override fun getOldListSize(): Int {
         return oldList.size
     }

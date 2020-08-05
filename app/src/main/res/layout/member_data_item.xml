@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel.Member" />
+            type="com.example.assessmentspectrumglobal.database.MemberEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:textSize="20sp"
             android:gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:text="@{item.name.first}"
+            android:text="@{item.name}"
             android:textStyle="bold"
             android:textColor="@color/grey_dark"
             app:layout_constraintTop_toTopOf="parent"

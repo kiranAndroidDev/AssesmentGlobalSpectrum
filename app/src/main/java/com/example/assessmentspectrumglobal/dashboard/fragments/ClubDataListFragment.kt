@@ -18,6 +18,7 @@ import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.adapter.ClubDataListAdapter
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
 import com.example.assessmentspectrumglobal.dashboard.onCompanySelected
+import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.databinding.FragmentClubListBinding
 import java.util.*
 
@@ -27,7 +28,7 @@ class ClubDataListFragment : Fragment(),
     DashboardContract.IClubDataFragmentView {
     private  var listener: onCompanySelected?=null
     private var clubDataListAdapter: ClubDataListAdapter? = null
-    private var dataList: List<ClubDataModel>? = null
+    private var dataList: List<CompanyWithMembers>? = null
     lateinit var binding: FragmentClubListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +60,7 @@ class ClubDataListFragment : Fragment(),
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: List<ClubDataModel>) =
+        fun newInstance(param1: List<CompanyWithMembers>) =
             ClubDataListFragment()
                 .apply {
                 arguments = Bundle().apply {
@@ -98,12 +99,13 @@ class ClubDataListFragment : Fragment(),
         }
     }
 
-    override fun initClubListAdapter(list: List<ClubDataModel>) {
+    override fun initClubListAdapter(list: List<CompanyWithMembers>) {
         binding.rV.layoutManager = LinearLayoutManager(activity)
         binding.rV.setHasFixedSize(true)
         clubDataListAdapter = ClubDataListAdapter(list,
             object : ClubDataListAdapter.ItemClickListener {
-                override fun showMemberListOnItemSelect(item: ClubDataModel) {
+
+                override fun showMemberListOnItemSelect(item: CompanyWithMembers) {
                     item.members?.let {
                         listener?.onShowMembers(it)
                     }

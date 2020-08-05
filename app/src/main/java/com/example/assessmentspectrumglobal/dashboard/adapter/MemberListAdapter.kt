@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
+import com.example.assessmentspectrumglobal.database.MemberEntity
 import com.example.assessmentspectrumglobal.databinding.MemberDataItemBinding
 
 /**
 Created by kiranb on 2/8/20
  */
-class MemberListAdapter (val list: List<ClubDataModel.Member>) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
+class MemberListAdapter (val list: List<MemberEntity>) : RecyclerView.Adapter<MemberListAdapter.ViewHolder>() {
 
-    private var currentList: List<ClubDataModel.Member> = list
+    private var currentList: List<MemberEntity> = list
 
     private lateinit var binding: MemberDataItemBinding
 
@@ -33,11 +34,11 @@ class MemberListAdapter (val list: List<ClubDataModel.Member>) : RecyclerView.Ad
     }
 
     fun showSortedListByName(ascending: Boolean) {
-        val newData = ArrayList(list)
+        val newData = ArrayList(currentList)
         if (ascending) {
-            newData.sortBy { it.name?.first }
+            newData.sortBy { it.name }
         } else
-            newData.sortByDescending { it.name?.first }
+            newData.sortByDescending { it.name }
         setData(newData)
 
     }
@@ -47,9 +48,9 @@ class MemberListAdapter (val list: List<ClubDataModel.Member>) : RecyclerView.Ad
     fun showSortedListByAge(ascending: Boolean) {
         val newData = ArrayList(currentList)
         if (ascending) {
-            newData.sortBy { it.age }
+            newData.sortedBy { it.age }
         } else
-            newData.sortByDescending { it.age }
+            newData.sortedByDescending { it.age }
         setData(newData)
 
     }
@@ -58,7 +59,7 @@ class MemberListAdapter (val list: List<ClubDataModel.Member>) : RecyclerView.Ad
         setData(currentList)
     }
 
-    private fun setData(newData: List<ClubDataModel.Member>) {
+    private fun setData(newData: List<MemberEntity>) {
         val diffResult = DiffUtil.calculateDiff(MemberListDiffCallback(newData, currentList))
         val updatedList = currentList.toMutableList()
         updatedList.clear()
