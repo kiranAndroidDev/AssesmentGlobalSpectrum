@@ -20,4 +20,5 @@ class MainApp : Application() {
         androidContext(this@MainApp)
         modules(appComponent)
     }
+
 }

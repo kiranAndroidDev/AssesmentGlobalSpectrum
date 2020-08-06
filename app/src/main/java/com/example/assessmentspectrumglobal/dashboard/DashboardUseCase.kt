@@ -24,7 +24,7 @@ class DashboardUseCase( val repo: DashboardContract.IRepo) : DashboardContract.I
         repo.updateMember(memberEntity)
     }
 
-    override fun loadMembers(companyId: String): DashboardStates {
+    override suspend fun loadMembers(companyId: String): DashboardStates {
         val res = repo.loadMembers(companyId)
         return when(res.status){
             Status.SUCCESS -> DashboardStates.MemberDataSuccess(res.data)

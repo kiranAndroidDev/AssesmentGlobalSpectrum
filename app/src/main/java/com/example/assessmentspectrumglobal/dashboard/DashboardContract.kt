@@ -30,14 +30,14 @@ interface DashboardContract {
         fun subscribeToState(): LiveData<DashboardStates>?
         fun updateCompany(companyEntity: CompanyEntity)
         fun updateMember(memberEntity: MemberEntity)
-        fun loadMembers(companyId:String)
+        fun loadMembers(companyId: String)
     }
 
     interface ILogic {
         suspend fun getClubData(): DashboardStates
         suspend fun updateCompany(companyEntity: CompanyEntity)
         suspend fun updateMember(memberEntity: MemberEntity)
-        fun loadMembers(companyId:String):DashboardStates
+        suspend fun loadMembers(companyId: String): DashboardStates
 
     }
 
@@ -46,6 +46,6 @@ interface DashboardContract {
         suspend fun getClubData(): Resource<List<CompanyWithMembers>>
         suspend fun updateCompany(companyEntity: CompanyEntity)
         suspend fun updateMember(memberEntity: MemberEntity)
-        fun loadMembers(companyId:String):Resource<List<MemberEntity>>
+        fun loadMembers(companyId: String): Resource<List<MemberEntity>>
     }
 }

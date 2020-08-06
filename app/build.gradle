@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion 29
@@ -34,6 +35,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek'
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -45,19 +57,20 @@ dependencies {
     def lifecycle_version = "2.2.0"
     def picasso_version = "2.71828"
     def room_version = "2.2.5"
+    def junit_version = '4.12'
+    def jraska_version = "1.1.0"
+    def hamcrest_version = "1.3"
+    def mockito_version = "2.21.0"
 
 
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
-    implementation"org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.1'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.google.android.material:material:1.1.0'
 
@@ -84,5 +97,22 @@ dependencies {
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "com.jraska.livedata:testing-ktx:$jraska_version"
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.3'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "org.hamcrest:hamcrest-library:$hamcrest_version"
+    testImplementation "com.google.truth:truth:1.0"
+
+    //Spek
+    testImplementation 'org.junit.platform:junit-platform-engine:1.6.2'
+    testImplementation 'org.jetbrains.spek:spek-api:1.1.5'
+    testImplementation 'org.spekframework.spek2:spek-dsl-jvm:2.0.6'
+    testImplementation 'org.spekframework.spek2:spek-runner-junit5:2.0.6'
+    testImplementation 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.4.0'
 
 }

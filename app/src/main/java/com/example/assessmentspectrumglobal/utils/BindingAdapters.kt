@@ -1,7 +1,8 @@
-package com.example.assessmentspectrumglobal
+package com.example.assessmentspectrumglobal.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.example.assessmentspectrumglobal.R
 import com.squareup.picasso.Picasso
 
 /**
