@@ -36,7 +36,7 @@ class ClubDataListAdapter(var list: List<CompanyEntity>, var listener: ItemSelec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.clubDataItemBinding.root.setOnClickListener {
-           // listener.onShowMembers(list[position].members!!)
+            listener.onShowMembers(list[position].id, list[position].company!!)
         }
         holder.clubDataItemBinding.btnFollow.setOnClickListener {
             item.follow = !item.follow

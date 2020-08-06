@@ -26,16 +26,20 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, ItemSelection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar?.title = "Dashboard"
+        setToolbarTitle("Dashboard")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard)
         setUp()
+    }
+
+    private fun setToolbarTitle(title: String) {
+        supportActionBar?.title = title
     }
 
     private fun setUp() {
 
         dashboardViewModel.subscribeToState()?.observe(this, Observer { state ->
             when (state) {
-                is DashboardStates.Success -> {
+                is DashboardStates.CompanyWithMemberSuccess -> {
                     Log.e("stat", "Success")
                     showLoading(false)
                     state.data?.let {
@@ -50,6 +54,11 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, ItemSelection
                 is DashboardStates.Loading -> {
                     showLoading(true)
                     Log.e("stat", "loading")
+                }
+
+                is DashboardStates.MemberDataSuccess -> {
+                    showLoading(false)
+                    state.data?.let { loadMemberScene(it) }
                 }
                 else -> Log.e("stat", "Success")
 
@@ -83,8 +92,9 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, ItemSelection
         transaction.replace(R.id.frame, fragment).addToBackStack(null).commit()
     }
 
-    override fun onShowMembers(list: List<MemberEntity>) {
-        loadMemberScene(list)
+    override fun onShowMembers(companyId: String, companyName: String) {
+        dashboardViewModel.loadMembers(companyId)
+        setToolbarTitle(companyName)
     }
 
     override fun onFollowCompany(companyEntity: CompanyEntity) {

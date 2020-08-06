@@ -11,7 +11,7 @@ class DashboardUseCase( val repo: DashboardContract.IRepo) : DashboardContract.I
     override suspend fun getClubData(): DashboardStates {
         val res = repo.getClubDataRemote()
         return when (res.status) {
-            Status.SUCCESS -> DashboardStates.Success(res.data)
+            Status.SUCCESS -> DashboardStates.CompanyWithMemberSuccess(res.data)
             else -> DashboardStates.Error(res.message)
         }
     }
@@ -22,5 +22,13 @@ class DashboardUseCase( val repo: DashboardContract.IRepo) : DashboardContract.I
 
     override suspend fun updateMember(memberEntity: MemberEntity) {
         repo.updateMember(memberEntity)
+    }
+
+    override fun loadMembers(companyId: String): DashboardStates {
+        val res = repo.loadMembers(companyId)
+        return when(res.status){
+            Status.SUCCESS -> DashboardStates.MemberDataSuccess(res.data)
+            else -> DashboardStates.Error(res.message)
+        }
     }
 }

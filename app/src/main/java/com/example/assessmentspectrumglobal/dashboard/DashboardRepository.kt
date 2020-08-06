@@ -64,5 +64,13 @@ class DashboardRepository(
         companyWithMembersDao.updateMember(memberEntity)
     }
 
+    override fun loadMembers(companyId: String):Resource<List<MemberEntity>> {
+       val res =  companyWithMembersDao.loadMembers(companyId)
+        return if(res==null)
+            Resource.error(null)
+        else
+            Resource.success(res)
+    }
+
 }
 

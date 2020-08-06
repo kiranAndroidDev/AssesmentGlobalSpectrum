@@ -36,4 +36,11 @@ class DashboardViewModel(var logic: DashboardContract.ILogic) : ViewModel(), Das
             logic.updateMember(memberEntity)
         }
     }
+
+    override fun loadMembers(companyId: String) {
+        dashboardStates.postValue(DashboardStates.Loading)
+        viewModelScope.launch(Dispatchers.IO) {
+            dashboardStates.postValue(logic.loadMembers(companyId))
+        }
+    }
 }

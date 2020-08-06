@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assessmentspectrumglobal.R
@@ -47,6 +48,9 @@ class MemberListFragment : Fragment() ,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.editQuery.doOnTextChanged { text, start, before, count ->
+            memberDataListAdapter?.filter?.filter(text)
+        }
 
     }
 

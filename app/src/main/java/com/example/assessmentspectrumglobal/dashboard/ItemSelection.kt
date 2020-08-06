@@ -8,7 +8,7 @@ import com.example.assessmentspectrumglobal.database.MemberEntity
 Created by kiranb on 4/8/20
  */
 interface ItemSelection {
-        fun onShowMembers(list: List<MemberEntity>)
+        fun onShowMembers(companyId:String,companyName:String)
         fun onMarkCompanyFavourite(companyEntity: CompanyEntity)
         fun onFollowCompany(companyEntity: CompanyEntity)
         fun onMarkMemberFavourite(memberEntity: MemberEntity)

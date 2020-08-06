@@ -41,6 +41,10 @@ abstract class CompanyWithMembersDao {
     @Transaction
     @Query("SELECT * FROM company")
     public abstract fun loadAll(): List<CompanyWithMembers>;
+
+    @Transaction
+    @Query("SELECT * FROM member where company_id =:cId")
+    public abstract fun loadMembers(cId: String): List<MemberEntity>?;
 }
 
 

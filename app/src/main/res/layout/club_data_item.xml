@@ -45,6 +45,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="10dp"
             android:textSize="16sp"
+            android:textColor="@color/label_heading_black"
             app:layout_constraintLeft_toRightOf="@id/guideline"
             android:text="@{item.company}"/>
 
@@ -88,7 +89,7 @@
             android:padding="8dp"
             android:background="@drawable/rounded_borderless_button_selector"
             android:text="@{item.follow?@string/followed:@string/follow}"
-            android:textColor="@{item.follow?@color/colorPrimary:@color/label_heading}"
+            android:textColor="@{item.follow?@color/colorAccent:@color/label_heading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/about_txt" />
