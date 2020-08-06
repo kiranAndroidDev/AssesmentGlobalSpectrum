@@ -26,7 +26,6 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, ItemSelection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setToolbarTitle("Dashboard")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard)
         setUp()
     }
@@ -40,27 +39,24 @@ class DashboardActivity : BaseActivity(), DashboardContract.IView, ItemSelection
         dashboardViewModel.subscribeToState()?.observe(this, Observer { state ->
             when (state) {
                 is DashboardStates.CompanyWithMemberSuccess -> {
-                    Log.e("stat", "Success")
                     showLoading(false)
                     state.data?.let {
                         loadClubListScene(state.data!!)
                     }
                 }
                 is DashboardStates.Error -> {
-                    Log.e("stat", "error")
                     showLoading(false)
                     showErrorMessage(state.msg)
                 }
                 is DashboardStates.Loading -> {
                     showLoading(true)
-                    Log.e("stat", "loading")
                 }
 
                 is DashboardStates.MemberDataSuccess -> {
                     showLoading(false)
                     state.data?.let { loadMemberScene(it) }
                 }
-                else -> Log.e("stat", "Success")
+                else -> Log.e("stat", "${state}")
 
             }
         })

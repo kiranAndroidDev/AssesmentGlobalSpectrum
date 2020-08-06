@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,6 +49,7 @@ class ClubDataListFragment : Fragment(),
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_club_list, container, false)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.dashboard)
         initClubListAdapter(dataList!!)
         setSpinnerForClubDataList()
         return binding.root
