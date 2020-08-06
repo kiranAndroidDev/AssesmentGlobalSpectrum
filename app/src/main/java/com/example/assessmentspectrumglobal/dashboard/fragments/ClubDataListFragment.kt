@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.assessmentspectrumglobal.R
@@ -18,15 +19,18 @@ import com.example.assessmentspectrumglobal.dashboard.DashboardActivity
 import com.example.assessmentspectrumglobal.dashboard.DashboardContract
 import com.example.assessmentspectrumglobal.dashboard.adapter.ClubDataListAdapter
 import com.example.assessmentspectrumglobal.dashboard.ItemSelection
+import com.example.assessmentspectrumglobal.database.CompanyEntity
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.databinding.FragmentClubListBinding
+import com.example.assessmentspectrumglobal.utils.LinearLayoutManagerWrapper
 import java.util.*
+import kotlin.collections.ArrayList
 
 private const val ARG_PARAM1 = "companyList"
 
 class ClubDataListFragment : Fragment(),
     DashboardContract.IClubDataFragmentView {
-    private  var listener: ItemSelection?=null
+    private var listener: ItemSelection? = null
     private var clubDataListAdapter: ClubDataListAdapter? = null
     private var dataList: List<CompanyWithMembers>? = null
     lateinit var binding: FragmentClubListBinding
@@ -52,6 +56,9 @@ class ClubDataListFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.editQuery.doOnTextChanged { text, start, before, count ->
+            clubDataListAdapter?.filter?.filter(text)
+        }
     }
 
     companion object {
@@ -59,10 +66,10 @@ class ClubDataListFragment : Fragment(),
         fun newInstance(param1: List<CompanyWithMembers>) =
             ClubDataListFragment()
                 .apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(ARG_PARAM1, param1 as ArrayList)
+                    arguments = Bundle().apply {
+                        putParcelableArrayList(ARG_PARAM1, param1 as ArrayList)
+                    }
                 }
-            }
     }
 
     private fun setSpinnerForClubDataList() {
@@ -86,9 +93,9 @@ class ClubDataListFragment : Fragment(),
                 id: Long
             ) {
                 when (position) {
-                    0 ->  clubDataListAdapter?.showOriginalsList()
+                    0 -> clubDataListAdapter?.showOriginalsList()
                     1 -> clubDataListAdapter?.showSortedList(true)
-                    2 ->  clubDataListAdapter?.showSortedList(false)
+                    2 -> clubDataListAdapter?.showSortedList(false)
                 }
             }
 
@@ -96,9 +103,13 @@ class ClubDataListFragment : Fragment(),
     }
 
     override fun initClubListAdapter(list: List<CompanyWithMembers>) {
-        binding.rV.layoutManager = LinearLayoutManager(activity)
+        binding.rV.layoutManager = LinearLayoutManagerWrapper(activity)
         binding.rV.setHasFixedSize(true)
-        clubDataListAdapter = ClubDataListAdapter(list, (activity as DashboardActivity))
+        val companyEntityList = ArrayList<CompanyEntity>()
+        for (i in list){
+            i.companyEntity?.let { companyEntityList.add(it) }
+        }
+        clubDataListAdapter = ClubDataListAdapter(companyEntityList.toList(), (activity as DashboardActivity))
         binding.rV.adapter = clubDataListAdapter
     }
 

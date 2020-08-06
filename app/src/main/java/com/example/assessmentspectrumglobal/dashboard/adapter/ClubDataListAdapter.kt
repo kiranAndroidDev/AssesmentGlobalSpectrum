@@ -16,19 +16,14 @@ import com.example.assessmentspectrumglobal.databinding.ClubDataItemBinding
 /**
 Created by kiranb on 31/7/20
  */
-class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: ItemSelection) :
+class ClubDataListAdapter(var list: List<CompanyEntity>, var listener: ItemSelection) :
     RecyclerView.Adapter<ClubDataListAdapter.ViewHolder>(), Filterable {
 
-    private var currentList: ArrayList<CompanyEntity> = arrayListOf()
-    private var orignalList: ArrayList<CompanyEntity> = arrayListOf()
+    private var orignalList: List<CompanyEntity>
     private lateinit var binding: ClubDataItemBinding
 
     init {
-        for (i in list) {
-            currentList.add(i.companyEntity!!)
-            orignalList.add(i.companyEntity!!)
-        }
-        Log.e("list", "${currentList.size}  ${orignalList.size} ${list.size}")
+        orignalList = list
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,9 +34,9 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = currentList[position]
+        val item = list[position]
         holder.clubDataItemBinding.root.setOnClickListener {
-            listener.onShowMembers(list[position].members!!)
+           // listener.onShowMembers(list[position].members!!)
         }
         holder.clubDataItemBinding.btnFollow.setOnClickListener {
             item.follow = !item.follow
@@ -66,13 +61,11 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
     }
 
     fun showSortedList(ascending: Boolean) {
-        val newData = ArrayList(orignalList)
-        if (ascending) {
-            newData.sortedBy {
-                it.company
-            }
-        } else
-            newData.sortedByDescending { it.company }
+        val newData = list.toMutableList()
+        if (ascending)
+            newData.sortBy { it.company }
+        else
+            newData.sortByDescending { it.company }
         setData(newData)
 
     }
@@ -82,13 +75,16 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
     }
 
     private fun setData(newData: List<CompanyEntity>) {
-        val diffResult = DiffUtil.calculateDiff(ClubDataListDiffCallback(newData, orignalList))
-        val updatedList = ArrayList<CompanyEntity>()
-        updatedList.clear()
-        updatedList.addAll(newData)
-        currentList.clear()
-        currentList.addAll(updatedList)
-        diffResult.dispatchUpdatesTo(this)
+        val diffResult = DiffUtil.calculateDiff(ClubDataListDiffCallback(list, newData))
+        try {
+            val updatedList = list.toMutableList()
+            updatedList.clear()
+            updatedList.addAll(newData)
+            list = updatedList.toList()
+            diffResult.dispatchUpdatesTo(this)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     class ViewHolder(binding: ClubDataItemBinding) :
@@ -106,7 +102,7 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
                 val filteredList: MutableList<CompanyEntity> = ArrayList()
                 if (charString.isNotEmpty()) {
                     for (data in orignalList) {
-                        if (data.company!!.contains(charSequence.toString())) {
+                        if (data.company!!.toLowerCase().contains(charSequence.toString())) {
                             filteredList.add(data)
                         }
                     }
@@ -115,7 +111,7 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
                     newList = orignalList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = filterResults
+                filterResults.values = newList
                 return filterResults
             }
 
@@ -123,7 +119,7 @@ class ClubDataListAdapter(var list: List<CompanyWithMembers>, var listener: Item
                 charSequence: CharSequence,
                 filterResults: FilterResults
             ) {
-                setData(filterResults.values as ArrayList<CompanyEntity>)
+                setData(filterResults.values as List<CompanyEntity>)
             }
         }
     }

@@ -64,11 +64,11 @@ class MemberListAdapter (val list: List<MemberEntity>, val listener:ItemSelectio
     }
 
     private fun setData(newData: List<MemberEntity>) {
-        val diffResult = DiffUtil.calculateDiff(MemberListDiffCallback(newData, currentList))
+        val diffResult = DiffUtil.calculateDiff(MemberListDiffCallback(currentList,newData))
         val updatedList = currentList.toMutableList()
         updatedList.clear()
         updatedList.addAll(newData)
-        currentList = updatedList.toList()
+        currentList = updatedList
         diffResult.dispatchUpdatesTo(this)
     }
 
