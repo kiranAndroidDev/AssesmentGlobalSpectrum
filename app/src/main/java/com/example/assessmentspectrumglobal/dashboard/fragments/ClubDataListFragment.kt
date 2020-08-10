@@ -23,7 +23,6 @@ import com.example.assessmentspectrumglobal.dashboard.ItemSelection
 import com.example.assessmentspectrumglobal.database.CompanyEntity
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.databinding.FragmentClubListBinding
-import com.example.assessmentspectrumglobal.utils.LinearLayoutManagerWrapper
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -105,7 +104,7 @@ class ClubDataListFragment : Fragment(),
     }
 
     override fun initClubListAdapter(list: List<CompanyWithMembers>) {
-        binding.rV.layoutManager = LinearLayoutManagerWrapper(activity)
+        binding.rV.layoutManager = LinearLayoutManager(activity)
         binding.rV.setHasFixedSize(true)
         val companyEntityList = ArrayList<CompanyEntity>()
         for (i in list){
