@@ -38,35 +38,35 @@ class DashboardUseCaseTest : Spek({
             reset(repo)
         }
 
-
-        context("getClubDataRemote") {
-            on("when get club data  success") {
-                it("it should return list of companyWithMembers") {
+        group("when getClubData is called") {
+            test("getClubData succesful") {
+                it("it should return CompanyWithMemberSuccess State") {
                     runBlocking {
                         val clubDatamodel = CompanyWithMembers()
                         val list = mutableListOf<CompanyWithMembers>()
                         list.add(clubDatamodel)
                         `when`(repo.getClubDataRemote()).thenReturn(Resource.success(list))
                         val res = useCase.getClubData()
-                        it("returns Success State") {
-                            assertEquals(res, DashboardStates.CompanyWithMemberSuccess(list))
-                        }
+
+                        assertEquals(res, DashboardStates.CompanyWithMemberSuccess(list))
+
 
                         verify(repo).getClubDataRemote()
                         verifyNoMoreInteractions(repo)
                     }
-
-
                 }
             }
-            on("when club data get failure") {
-                it("it should return error") {
+
+
+
+            test("when getClubData is failure") {
+                it("returns error State") {
                     runBlocking {
                         `when`(repo.getClubDataRemote()).thenReturn(Resource.error(null))
                         val res = useCase.getClubData()
-                        it("returns error State") {
-                            assertEquals(res, DashboardStates.Error(null))
-                        }
+
+                        assertEquals(res, DashboardStates.Error(null))
+
 
                         verify(repo).getClubDataRemote()
                         verifyNoMoreInteractions(repo)
@@ -74,47 +74,53 @@ class DashboardUseCaseTest : Spek({
                 }
 
             }
+
         }
 
-        context("loadMembers") {
-            on("when member data called success") {
-                runBlocking {
-                    val memberList = MemberEntity(
-                        cId = "1",
-                        age = 20,
-                        memberID = "",
-                        email = "",
-                        phone = "",
-                        favourite = false,
-                        name = ""
-                    )
-                    val list = mutableListOf<MemberEntity>()
-                    list.add(memberList)
-                    `when`(repo.loadMembers("1")).thenReturn(Resource.success(list))
-                    val res = useCase.loadMembers("1")
-                    it("returns Success State") {
+        group("loadMembers is called") {
+            test("when loadMembers is successful") {
+                it("should return MemberDataSuccess State") {
+                    runBlocking {
+                        val memberList = MemberEntity(
+                            cId = "1",
+                            age = 20,
+                            memberID = "",
+                            email = "",
+                            phone = "",
+                            favourite = false,
+                            name = ""
+                        )
+                        val list = mutableListOf<MemberEntity>()
+                        list.add(memberList)
+                        `when`(repo.loadMembers("1")).thenReturn(Resource.success(list))
+                        val res = useCase.loadMembers("1")
                         assertEquals(res, DashboardStates.MemberDataSuccess(list))
-                    }
+                        verify(repo).loadMembers("1")
+                        verifyNoMoreInteractions(repo)
 
-                    verify(repo).loadMembers("1")
-                    verifyNoMoreInteractions(repo)
+                    }
                 }
 
             }
-            on("when member data get failure") {
-                runBlocking {
-                    `when`(repo.loadMembers("1")).thenReturn(Resource.error(null))
-                    val res = useCase.loadMembers("1")
-                    it("returns error State") {
-                        assertEquals(res, DashboardStates.Error(null))
-                    }
 
-                    verify(repo).loadMembers("1")
-                    verifyNoMoreInteractions(repo)
+            test("when loadMembers fails") {
+                it("should return Error State") {
+                    runBlocking {
+                        `when`(repo.loadMembers("1")).thenReturn(Resource.error(null))
+                        val res = useCase.loadMembers("1")
+
+                        assertEquals(res, DashboardStates.Error(null))
+
+
+                        verify(repo).loadMembers("1")
+                        verifyNoMoreInteractions(repo)
+                    }
                 }
+
+
             }
         }
+
 
     }
-
 })
