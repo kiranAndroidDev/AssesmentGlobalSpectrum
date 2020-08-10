@@ -34,89 +34,96 @@ class DashboardViewModelTest : Spek({
     val testDispatcher = TestCoroutineDispatcher()
 
     describe("dashboard test data changes") {
-        beforeEachTest {
+        beforeGroup {
             repo = mock()
             dashboardStateObserver = mock()
             useCase = DashboardUseCase(repo)
             dashboardViewModel = DashboardViewModel(useCase)
         }
-        afterEachTest {
+        afterGroup {
             reset(repo)
         }
-        on("get club data success") {
-            context("get club data return list of companies") {
-                runBlocking(testDispatcher) {
-                    val clubDatamodel = CompanyWithMembers()
-                    val list = mutableListOf<CompanyWithMembers>()
-                    list.add(clubDatamodel)
-                    Mockito.`when`(repo.getClubDataRemote()).thenReturn(Resource.success(list))
-                    dashboardViewModel.getClubData()
-                    dashboardViewModel.subscribeToState()?.observeForever(dashboardStateObserver)
+        context("getClubData") {
+            on("get club data success") {
+                context("get club data return list of companies") {
+                    runBlocking(testDispatcher) {
+                        val clubDatamodel = CompanyWithMembers()
+                        val list = mutableListOf<CompanyWithMembers>()
+                        list.add(clubDatamodel)
+                        Mockito.`when`(repo.getClubDataRemote()).thenReturn(Resource.success(list))
+                        dashboardViewModel.getClubData()
+                        dashboardViewModel.subscribeToState()
+                            ?.observeForever(dashboardStateObserver)
 
-                    verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
-                    verify(dashboardStateObserver).onChanged(
-                        DashboardStates.CompanyWithMemberSuccess(
-                            list
+                        verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
+                        verify(dashboardStateObserver).onChanged(
+                            DashboardStates.CompanyWithMemberSuccess(
+                                list
+                            )
                         )
-                    )
+                    }
                 }
             }
-        }
-        on("get club data error") {
-            context("get club data return error") {
-                runBlocking(testDispatcher) {
-                    Mockito.`when`(repo.getClubDataRemote()).thenReturn(Resource.error(null))
-                    dashboardViewModel.getClubData()
-                    dashboardViewModel.subscribeToState()?.observeForever(dashboardStateObserver)
+            on("get club data error") {
+                context("get club data return error") {
+                    runBlocking(testDispatcher) {
+                        Mockito.`when`(repo.getClubDataRemote()).thenReturn(Resource.error(null))
+                        dashboardViewModel.getClubData()
+                        dashboardViewModel.subscribeToState()
+                            ?.observeForever(dashboardStateObserver)
 
-                    verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
-                    verify(dashboardStateObserver).onChanged(
-                        DashboardStates.Error(null)
-                    )
-                }
-            }
-        }
-        on("get member list success") {
-            context("get club data return list of companies") {
-                runBlocking(testDispatcher) {
-                    val memberList = MemberEntity(
-                        cId = "1",
-                        age = 20,
-                        memberID = "",
-                        email = "",
-                        phone = "",
-                        favourite = false,
-                        name = ""
-                    )
-                    val list = mutableListOf<MemberEntity>()
-                    list.add(memberList)
-                    Mockito.`when`(repo.loadMembers("1")).thenReturn(Resource.success(list))
-                    dashboardViewModel.loadMembers("1")
-                    dashboardViewModel.subscribeToState()?.observeForever(dashboardStateObserver)
-
-                    verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
-                    verify(dashboardStateObserver).onChanged(
-                        DashboardStates.MemberDataSuccess(
-                            list
+                        verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
+                        verify(dashboardStateObserver).onChanged(
+                            DashboardStates.Error(null)
                         )
-                    )
+                    }
                 }
             }
         }
-        on("get member list error") {
-            context("get club data return error") {
-                runBlocking(testDispatcher) {
-                    Mockito.`when`(repo.loadMembers("1")).thenReturn(Resource.error(null))
-                    dashboardViewModel.loadMembers("1")
-                    dashboardViewModel.subscribeToState()?.observeForever(dashboardStateObserver)
+        context("loadMembers") {
+            on("get member list success") {
+                context("get club data return list of companies") {
+                    runBlocking(testDispatcher) {
+                        val memberList = MemberEntity(
+                            cId = "1",
+                            age = 20,
+                            memberID = "",
+                            email = "",
+                            phone = "",
+                            favourite = false,
+                            name = ""
+                        )
+                        val list = mutableListOf<MemberEntity>()
+                        list.add(memberList)
+                        Mockito.`when`(repo.loadMembers("1")).thenReturn(Resource.success(list))
+                        dashboardViewModel.loadMembers("1")
+                        dashboardViewModel.subscribeToState()
+                            ?.observeForever(dashboardStateObserver)
 
-                    verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
-                    verify(dashboardStateObserver).onChanged(
-                        DashboardStates.Error(null)
-                    )
+                        verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
+                        verify(dashboardStateObserver).onChanged(
+                            DashboardStates.MemberDataSuccess(
+                                list
+                            )
+                        )
+                    }
+                }
+            }
+            on("get member list error") {
+                context("get club data return error") {
+                    runBlocking(testDispatcher) {
+                        Mockito.`when`(repo.loadMembers("1")).thenReturn(Resource.error(null))
+                        dashboardViewModel.loadMembers("1")
+                        dashboardViewModel.subscribeToState()
+                            ?.observeForever(dashboardStateObserver)
+
+                        verify(dashboardStateObserver).onChanged(DashboardStates.Loading)
+                        verify(dashboardStateObserver).onChanged(
+                            DashboardStates.Error(null)
+                        )
+                    }
                 }
             }
         }
-
     }
 })

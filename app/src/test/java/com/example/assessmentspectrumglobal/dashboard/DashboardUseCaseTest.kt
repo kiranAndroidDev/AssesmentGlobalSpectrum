@@ -29,53 +29,55 @@ class DashboardUseCaseTest : Spek({
 
     describe("get data from repo") {
 
-        beforeEachTest {
+        beforeGroup {
             repo = mock()
             useCase = DashboardUseCase(repo)
         }
 
-        afterEachTest {
+        afterGroup {
             reset(repo)
         }
 
-        on("when get club data  success") {
-            context("When get club data returns list of companyWithMembers") {
-                runBlocking {
-                    val clubDatamodel = CompanyWithMembers()
-                    val list = mutableListOf<CompanyWithMembers>()
-                    list.add(clubDatamodel)
-                    `when`(repo.getClubDataRemote()).thenReturn(Resource.success(list))
-                    val res = useCase.getClubData()
-                    it("returns Success State") {
-                        assertEquals(res, DashboardStates.CompanyWithMemberSuccess(list))
+
+        context("getClubDataRemote") {
+            on("when get club data  success") {
+                it("it should return list of companyWithMembers") {
+                    runBlocking {
+                        val clubDatamodel = CompanyWithMembers()
+                        val list = mutableListOf<CompanyWithMembers>()
+                        list.add(clubDatamodel)
+                        `when`(repo.getClubDataRemote()).thenReturn(Resource.success(list))
+                        val res = useCase.getClubData()
+                        it("returns Success State") {
+                            assertEquals(res, DashboardStates.CompanyWithMemberSuccess(list))
+                        }
+
+                        verify(repo).getClubDataRemote()
+                        verifyNoMoreInteractions(repo)
                     }
 
-                    verify(repo).getClubDataRemote()
-                    verifyNoMoreInteractions(repo)
+
                 }
             }
+            on("when club data get failure") {
+                it("it should return error") {
+                    runBlocking {
+                        `when`(repo.getClubDataRemote()).thenReturn(Resource.error(null))
+                        val res = useCase.getClubData()
+                        it("returns error State") {
+                            assertEquals(res, DashboardStates.Error(null))
+                        }
 
-
-        }
-        on("when club data get failure") {
-            context("when get club data returns error") {
-                runBlocking {
-                    `when`(repo.getClubDataRemote()).thenReturn(Resource.error(null))
-                    val res = useCase.getClubData()
-                    it("returns error State") {
-                        assertEquals(res, DashboardStates.Error(null))
+                        verify(repo).getClubDataRemote()
+                        verifyNoMoreInteractions(repo)
                     }
-
-                    verify(repo).getClubDataRemote()
-                    verifyNoMoreInteractions(repo)
                 }
-            }
 
+            }
         }
 
-
-        on("when member data called success") {
-            context("When it returns list of members") {
+        context("loadMembers") {
+            on("when member data called success") {
                 runBlocking {
                     val memberList = MemberEntity(
                         cId = "1",
@@ -99,11 +101,7 @@ class DashboardUseCaseTest : Spek({
                 }
 
             }
-
-        }
-
-        on("when member data get failure") {
-            context("when get member list data returns error") {
+            on("when member data get failure") {
                 runBlocking {
                     `when`(repo.loadMembers("1")).thenReturn(Resource.error(null))
                     val res = useCase.loadMembers("1")
@@ -115,8 +113,8 @@ class DashboardUseCaseTest : Spek({
                     verifyNoMoreInteractions(repo)
                 }
             }
-
         }
 
     }
+
 })
