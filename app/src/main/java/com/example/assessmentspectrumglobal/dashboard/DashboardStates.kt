@@ -1,7 +1,6 @@
 package com.example.assessmentspectrumglobal.dashboard
 
-import com.example.assessmentspectrumglobal.dashboard.model.ClubDataModel
-import com.example.assessmentspectrumglobal.database.CompanyEntity
+
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.database.MemberEntity
 

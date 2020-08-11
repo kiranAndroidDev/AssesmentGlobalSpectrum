@@ -10,10 +10,8 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`

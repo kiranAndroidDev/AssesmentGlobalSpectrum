@@ -1,6 +1,5 @@
 package com.example.assessmentspectrumglobal.dashboard
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.assessmentspectrumglobal.database.CompanyWithMembers
 import com.example.assessmentspectrumglobal.database.MemberEntity
@@ -9,7 +8,6 @@ import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import org.junit.platform.runner.JUnitPlatform

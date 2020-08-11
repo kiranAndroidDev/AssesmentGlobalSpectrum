@@ -46,6 +46,6 @@ interface DashboardContract {
         suspend fun getClubData(): Resource<List<CompanyWithMembers>>
         suspend fun updateCompany(companyEntity: CompanyEntity)
         suspend fun updateMember(memberEntity: MemberEntity)
-        fun loadMembers(companyId: String): Resource<List<MemberEntity>>
+        suspend fun loadMembers(companyId: String): Resource<List<MemberEntity>>
     }
 }
